@@ -1,23 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Diary</title>
+    <title></title>
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+        }
+
+        .activities {
+            float: left;
+            width: 40px;
+            height: 100%;
+            padding: 0 10px;
+            border: 1px solid #ccc;
+            background: #eee;
+            text-align: left;
+        }
+        .activities .fc-event {
+            width: 26px;
+            text-align: center;
+            border-radius: 100%;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        #calendar {
+            float: right;
+            width: 900px;
+        }
+
+        .fc-event-container .fc-event.activity {
+            width: 26px;
+            font-size: 20px;
+            border-radius: 100%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
+    <div class="activities">
+        <div class="fc-event ui-draggable ui-draggable-handle" data-title="activity1"><i class="fa fa-clock-o"></i></div>
+        <div class="fc-event ui-draggable ui-draggable-handle" data-title="activity1"><i class="fa fa-home"></i></div>
+        <div class="fc-event ui-draggable ui-draggable-handle" data-title="traveling"><i class="fa fa-plane"></i></div>
+        <div class="fc-event ui-draggable ui-draggable-handle" data-title="gaming"><i class="fa fa-gamepad"></i></div>
+        <div class="fc-event ui-draggable ui-draggable-handle" data-title="income"><i class="fa fa-money"></i></div>
+    </div>
     <div id="calendar"></div>
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
     <script src="bower_components/moment/min/moment-with-locales.min.js"></script>
-    <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
 
     <script>
         $(document).ready(function() {
-            $('#calendar').fullCalendar({
-
+            $('.activities .fc-event').each(function() {
+                $(this).data('event', {
+                    title: $.trim($(this).data('title')),
+                    iconClass: $(this).find('>:first-child')[0].className,
+                    stick: true
+                });
+                $(this).draggable({
+                    zIndex: 999,
+                    revert: true,
+                    revertDuration: 0
+                });
             });
+
+            $('#calendar').fullCalendar({
+                editable: true,
+                droppable: true,
+                drop: function() {},
+                eventRender: function(event, element) {
+                    element.addClass('activity');
+                    element.removeClass('fc-resizable');
+                    element.find('.fc-content').html('<i class="' + event.iconClass + '"></i>');
+                    element.find('.fc-resizer').remove();
+                }
+            });
+
+
         });
+
     </script>
 </body>
 </html>
