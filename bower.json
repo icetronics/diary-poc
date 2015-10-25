@@ -11,8 +11,9 @@
     "bower_components"
   ],
   "dependencies": {
-      "jquery": "~2.1.4",
-      "moment": "~2.10.6",
-      "fullcalendar": "~2.4.0"
+    "jquery": "~2.1.4",
+    "moment": "~2.10.6",
+    "font-awesome": "~4.4.0",
+    "interact": "~1.2.6"
   }
 }
