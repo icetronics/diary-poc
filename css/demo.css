@@ -107,8 +107,10 @@ a {
     border-radius: 4px;
     margin: 10px auto 30px;
     padding: 10px;
+    position: absolute;
+    bottom: 0;
     width: 94%;
-    height: 76px;
+    height: 30%;
     transition: background-color 0.3s;
 }
 
@@ -129,7 +131,7 @@ a {
     transition: background-color 0.3s;
 }
 
-.drag-drop.can-drop {
-    color: #000;
-    background-color: #4e4;
+.day-activities-container .activity {
+    display: inline-block;
+    margin: 5px;
 }

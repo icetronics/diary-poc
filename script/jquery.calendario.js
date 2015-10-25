@@ -158,7 +158,7 @@
 
 						inner += '<span class="fc-date">' + day + '</span>' +
                             '<span class="fc-weekday">' + this.options.weekabbrs[ j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn ] + '</span>' +
-                            '<div class="dropzone"></div>';
+                            '<div class="day-activities-container dropzone" data-day="' + this.year + '-' + (this.month + 1) + '-' + day + '"></div>';
 
 						// this day is:
 						var strdate = ( this.month + 1 < 10 ? '0' + ( this.month + 1 ) : this.month + 1 ) + '-' + ( day < 10 ? '0' + day : day ) + '-' + this.year,
