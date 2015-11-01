@@ -140,7 +140,8 @@
 
 			var html = '<div class="fc-body"><div class="fc-row">',
 				// fill in the days
-				day = 1;
+				day = 1,
+                dateString;
 
 			// this loop is for weeks (rows)
 			for ( var i = 0; i < 7; i++ ) {
@@ -158,7 +159,8 @@
 
 						inner += '<span class="fc-date">' + day + '</span>' +
                             '<span class="fc-weekday">' + this.options.weekabbrs[ j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn ] + '</span>' +
-                            '<div class="day-activities-container dropzone" data-day="' + this.year + '-' + (this.month + 1) + '-' + day + '"></div>';
+                            '<div class="day-diary-entry-container"></div>' +
+                            '<div class="day-activities-container dropzone"></div>';
 
 						// this day is:
 						var strdate = ( this.month + 1 < 10 ? '0' + ( this.month + 1 ) : this.month + 1 ) + '-' + ( day < 10 ? '0' + day : day ) + '-' + this.year,
@@ -172,6 +174,8 @@
 							inner += '<div>' + content + '</div>';
 						}
 
+                        dateString = this.year + '-' + (this.month + 1) + '-' + day;
+
 						++day;
 
 					}
@@ -179,12 +183,16 @@
 						today = false;
 					}
 
-					var cellClasses = today ? 'fc-today ' : '';
+					var cellClasses = today ? ' fc-today ' : '';
 					if( content !== '' ) {
-						cellClasses += 'fc-content';
+						cellClasses += ' fc-content';
 					}
 
-					html += cellClasses !== '' ? '<div class="' + cellClasses + '">' : '<div>';
+                    html += '<div class="day' + cellClasses + '"';
+                    if (dateString) {
+                        html += ' data-day="' + dateString + '"';
+                    }
+                    html += '>';
 					html += inner;
 					html += '</div>';
 

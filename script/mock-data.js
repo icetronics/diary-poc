@@ -23,5 +23,9 @@ var mocks = {
         income: 'money',
         appointment: 'clock-o'
     },
-    myCalendar: { }
+    myCalendar: {
+        '2015-11-5': {
+            entry: "You were only supposed to blow the bloody doors off. we are very much alike, you and i, i and you... us. my lord! you're a tripod. it's not the size mate, it's how you use it. we had two bags of grass, seventy-five pellets of mescaline, five sheets of high-powered blotter acid, a saltshaker half-full of cocaine, and a whole galaxy of multi-colored uppers, downers, screamers, laughers... jasper: your baby is the miracle the whole world has been waiting for. holy jesus. what are these goddamn animals?"
+        }
+    }
 };

@@ -50,7 +50,7 @@ $(function() {
             event.target.classList.remove('drop-target');
         },
         ondrop: function (event) {
-            var day = $(event.target).data('day');
+            var day = $(event.target).closest('.day').data('day');
             var activity = $(event.relatedTarget).data('activity-id');
             addActivity(day, activity);
             refreshCalendar();
@@ -76,7 +76,6 @@ $(function() {
         if (!mocks.myCalendar[day]) {
             mocks.myCalendar[day] = {
                 activities: []
-                // diary entry, color, type, etc
             };
         }
 
@@ -84,14 +83,83 @@ $(function() {
     }
 
     function refreshCalendar () {
-        $.each($('.day-activities-container'), function (index, containerElement) {
-            $(containerElement).empty();
-            var day = $(containerElement).data('day');
-            if (mocks.myCalendar[day] && mocks.myCalendar[day].activities.length) {
+        $.each($('.day'), function (index, dayCell) {
+            var day = $(dayCell).data('day');
+
+            var entryContainer = $(dayCell).find('.day-diary-entry-container');
+            entryContainer.empty();
+            if (mocks.myCalendar[day] && mocks.myCalendar[day].entry) {
+                entryContainer.html(mocks.myCalendar[day].entry);
+            }
+
+            var activitiesContainer = $(dayCell).find('.day-activities-container');
+            activitiesContainer.empty();
+            if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
                 _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
-                    $(containerElement).append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
+                    $(activitiesContainer).append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
                 });
             }
+        });
+    }
+
+    refreshCalendar();
+
+    var zoomedEntry = null,
+        zoomedIn = false,
+        zoomingInProgress = false;
+
+    $('.day-diary-entry-container').zoomTarget({
+        targetsize: 0.4,
+        duration: 300,
+        easing: 'ease-in-out',
+        closeclick: true,
+        animationendcallback: function () {
+            if (zoomedEntry && zoomedEntry.hasClass('expanded')) {
+                entryZoomOut(zoomedEntry);
+            }
+        }});
+
+    $('.day-diary-entry-container').on('click', function (e) {
+        var entry = $(e.target);
+        if (!entry.hasClass('expanded')) {
+            entryZoomIn(entry);
+        }
+        else {
+            entryZoomOut(entry);
+        }
+    });
+
+    function entryZoomIn (entry) {
+        if (zoomingInProgress) return;
+        zoomingInProgress = true;
+        entry.animate({
+            width: '+=140px',
+            height: '+=40%',
+            top: '-=10px',
+            left: '-=70px',
+            fontSize: '-=4pt'
+        }, 300, function () {
+            entry.addClass('expanded');
+            zoomedEntry = entry;
+            zoomedIn = true;
+            zoomingInProgress = false;
+        });
+    }
+
+    function entryZoomOut (entry) {
+        if (zoomingInProgress) return;
+        zoomingInProgress = true;
+        entry.animate({
+            width: '-=140px',
+            height: '-=40%',
+            top: '+=10px',
+            left: '+=70px',
+            fontSize: '+=4pt'
+        }, 300, function () {
+            entry.removeClass('expanded');
+            zoomedEntry = null;
+            zoomedIn = false;
+            zoomingInProgress = false;
         });
     }
 });

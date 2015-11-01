@@ -80,18 +80,22 @@ a {
     position: absolute;
     width: 40px;
     height: 100%;
-    padding: 0 10px;
+    padding: 0 6px;
     border: 1px solid #ccc;
     background: #eee;
     text-align: left;
 }
 .activities .activity {
     width: 26px;
+    height: 26px;
     text-align: center;
+    padding-top: 2px;
     border-radius: 100%;
     margin: 10px 0;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
+    background-color: #078bff;
+    color: #fff;
 }
 
 .fc-event-container .fc-event.activity {
@@ -102,14 +106,14 @@ a {
 }
 
 .dropzone {
-    background-color: #EBF3FB;
-    border: dashed 2px transparent;
+    background-color: rgba(235, 243, 251, 0.6);
+    border: dashed 1px transparent;
     border-radius: 4px;
-    margin: 10px auto 30px;
-    padding: 10px;
+    margin: 10px auto;
+    padding: 6px;
     position: absolute;
     bottom: 0;
-    width: 94%;
+    width: calc(100% - 20px);
     height: 30%;
     transition: background-color 0.3s;
 }
@@ -119,7 +123,7 @@ a {
 }
 
 .drop-target {
-    background-color: #29e;
+    background-color: #b7eeb3;
     border-color: #fff;
     border-style: solid;
 }
@@ -127,11 +131,35 @@ a {
 .drag-drop {
     -webkit-transform: translate(0px, 0px);
     transform: translate(0px, 0px);
-
     transition: background-color 0.3s;
 }
 
 .day-activities-container .activity {
     display: inline-block;
-    margin: 5px;
+    margin: 0 5px;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    padding-top: 2px;
+    border-radius: 100%;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: #078bff;
+    color: #fff;
+}
+
+.day-diary-entry-container {
+    margin-top: 0 !important;
+    margin-left: 34px;
+    height: 60%;
+    overflow: hidden;
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+    transition: background-color 0.2s;
+}
+
+.day-diary-entry-container.expanded {
+    background-color: #fff;
+    z-index: 1000;
 }
