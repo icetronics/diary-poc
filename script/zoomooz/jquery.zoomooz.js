@@ -1557,7 +1557,7 @@ if(!$.zoomooz) {
         // FIXME: how to remove the html height requirement?
         // FIXME: how to remove the transform origin?
         style.innerHTML = ".zoomTarget{"+setupSelectionCss(false)+"}"+
-                          ".zoomTarget:hover{cursor:pointer!important;}"+
+                          ".zoomTarget:hover{cursor:pointer;}"+
                           ".zoomNotClickable{"+setupSelectionCss(true)+"}"+
                           ".zoomNotClickable:hover{cursor:auto!important;}"+
                           /* padding to fix margin collapse issues */

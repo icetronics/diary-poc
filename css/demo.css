@@ -105,7 +105,7 @@ a {
     text-align: center;
 }
 
-.dropzone {
+.droparea {
     background-color: rgba(235, 243, 251, 0.6);
     border: dashed 1px transparent;
     border-radius: 4px;
@@ -149,17 +149,34 @@ a {
 }
 
 .day-diary-entry-container {
+    padding-top: 0;
+    top: 0;
     margin-top: 0 !important;
-    margin-left: 34px;
+    margin-left: 44px;
     height: 60%;
     overflow: hidden;
     cursor: pointer;
     position: absolute;
     background-color: transparent;
+    outline: none;
     transition: background-color 0.2s;
 }
 
 .day-diary-entry-container.expanded {
     background-color: #fff;
     z-index: 1000;
+}
+
+.hallotoolbar {
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.file-dropzone {
+    z-index: 1001;
+    border: 1px solid red;
+    position: absolute;
+    width: 100%;
+    display: none;
 }

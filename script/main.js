@@ -37,7 +37,7 @@ $(function() {
         target.setAttribute('data-y', y);
     }
 
-    interact('.dropzone').dropzone({
+    interact('.droparea').dropzone({
         overlap: 0.25,
 
         ondropactivate: function (event) {
@@ -135,16 +135,17 @@ function entryZoomIn (entry) {
     if (zoomingInProgress) return;
     zoomingInProgress = true;
     entry.animate({
-        width: '+=140px',
+        width: '+=130px',
         height: '+=40%',
-        top: '-=10px',
-        left: '-=70px',
+        top: '-=40px',
+        left: '-=50px',
         fontSize: '-=4pt'
-    }, 300, function () {
+    }, 350, function () {
         entry.addClass('expanded');
         zoomedEntry = entry;
         zoomedIn = true;
         zoomingInProgress = false;
+        enableEditor(entry);
     });
 }
 
@@ -154,15 +155,33 @@ function entryZoomOut (entry) {
     if (!entry.length) return;
     zoomingInProgress = true;
     entry.animate({
-        width: '-=140px',
+        width: '-=130px',
         height: '-=40%',
-        top: '+=10px',
-        left: '+=70px',
-        fontSize: '+=4pt'
-    }, 300, function () {
+        top: '+=40px',
+        left: '+=50px',
+        paddingTop: '-=40px',
+        fontSize: '+=4pt',
+        cursor: 'hand'
+    }, 350, function () {
         entry.removeClass('expanded');
         zoomedEntry = null;
         zoomedIn = false;
         zoomingInProgress = false;
+        disableEditor(entry);
     });
+}
+
+function enableEditor (entry) {
+    entry.css('cursor', 'text');
+    entry.css('overflow', 'auto');
+    entry.attr('contenteditable', 'true');
+    entry.attr('spellcheck', 'false');
+    //entry.siblings('.file-dropzone').show();
+}
+
+function disableEditor (entry) {
+    entry.css('cursor', 'pointer');
+    entry.css('overflow', 'hidden');
+    entry.removeAttr('contenteditable');
+    //entry.siblings('.file-dropzone').hide();
 }
