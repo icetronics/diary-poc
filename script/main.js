@@ -79,6 +79,10 @@ $(function() {
             };
         }
 
+        if (!mocks.myCalendar[day].activities) {
+            mocks.myCalendar[day].activities = [];
+        }
+
         mocks.myCalendar[day].activities.push(activity);
     }
 
@@ -104,15 +108,11 @@ $(function() {
 
     refreshCalendar();
 
-    var zoomedEntry = null,
-        zoomedIn = false,
-        zoomingInProgress = false;
-
     $('.day-diary-entry-container').zoomTarget({
         targetsize: 0.4,
         duration: 300,
         easing: 'ease-in-out',
-        closeclick: true,
+        closeclick: false,
         animationendcallback: function () {
             if (zoomedEntry && zoomedEntry.hasClass('expanded')) {
                 entryZoomOut(zoomedEntry);
@@ -124,42 +124,45 @@ $(function() {
         if (!entry.hasClass('expanded')) {
             entryZoomIn(entry);
         }
-        else {
-            entryZoomOut(entry);
-        }
     });
-
-    function entryZoomIn (entry) {
-        if (zoomingInProgress) return;
-        zoomingInProgress = true;
-        entry.animate({
-            width: '+=140px',
-            height: '+=40%',
-            top: '-=10px',
-            left: '-=70px',
-            fontSize: '-=4pt'
-        }, 300, function () {
-            entry.addClass('expanded');
-            zoomedEntry = entry;
-            zoomedIn = true;
-            zoomingInProgress = false;
-        });
-    }
-
-    function entryZoomOut (entry) {
-        if (zoomingInProgress) return;
-        zoomingInProgress = true;
-        entry.animate({
-            width: '-=140px',
-            height: '-=40%',
-            top: '+=10px',
-            left: '+=70px',
-            fontSize: '+=4pt'
-        }, 300, function () {
-            entry.removeClass('expanded');
-            zoomedEntry = null;
-            zoomedIn = false;
-            zoomingInProgress = false;
-        });
-    }
 });
+
+var zoomedEntry = null,
+    zoomedIn = false,
+    zoomingInProgress = false;
+
+function entryZoomIn (entry) {
+    if (zoomingInProgress) return;
+    zoomingInProgress = true;
+    entry.animate({
+        width: '+=140px',
+        height: '+=40%',
+        top: '-=10px',
+        left: '-=70px',
+        fontSize: '-=4pt'
+    }, 300, function () {
+        entry.addClass('expanded');
+        zoomedEntry = entry;
+        zoomedIn = true;
+        zoomingInProgress = false;
+    });
+}
+
+function entryZoomOut (entry) {
+    if (zoomingInProgress) return;
+    if (!entry) entry = $('.day-diary-entry-container.expanded');
+    if (!entry.length) return;
+    zoomingInProgress = true;
+    entry.animate({
+        width: '-=140px',
+        height: '-=40%',
+        top: '+=10px',
+        left: '+=70px',
+        fontSize: '+=4pt'
+    }, 300, function () {
+        entry.removeClass('expanded');
+        zoomedEntry = null;
+        zoomedIn = false;
+        zoomingInProgress = false;
+    });
+}
