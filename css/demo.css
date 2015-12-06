@@ -84,6 +84,7 @@ a {
     border: 1px solid #ccc;
     background: #eee;
     text-align: left;
+    z-index: 10001;
 }
 .activities .activity {
     width: 26px;
@@ -134,6 +135,10 @@ a {
     transition: background-color 0.3s;
 }
 
+#calendar {
+    position: absolute;
+}
+
 .day-activities-container .activity {
     display: inline-block;
     margin: 0 5px;
@@ -175,7 +180,6 @@ a {
 
 .file-dropzone {
     z-index: 1001;
-    border: 1px solid red;
     position: absolute;
     width: 100%;
     display: none;

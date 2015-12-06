@@ -106,82 +106,17 @@ $(function() {
         });
     }
 
-    refreshCalendar();
+    var dayModal = $('[data-remodal-id="dayModal"]').remodal();
 
-    $('.day-diary-entry-container').zoomTarget({
-        targetsize: 0.4,
-        duration: 300,
-        easing: 'ease-in-out',
-        closeclick: false,
-        animationendcallback: function () {
-            if (zoomedEntry && zoomedEntry.hasClass('expanded')) {
-                entryZoomOut(zoomedEntry);
-            }
-        }});
-
-    $('.day-diary-entry-container').on('click', function (e) {
-        var entry = $(e.target);
-        if (!entry.hasClass('expanded')) {
-            entryZoomIn(entry);
+    $('.day').on('click', function () {
+        var day = $(this).data('day');
+        var modalContent = $('.modal-content');
+        modalContent.find('.day').text(day);
+        if (mocks.myCalendar[day] && mocks.myCalendar[day].entry) {
+            modalContent.find('.text-entry').html(mocks.myCalendar[day].entry);
         }
+        dayModal.open();
     });
+
+    refreshCalendar();
 });
-
-var zoomedEntry = null,
-    zoomedIn = false,
-    zoomingInProgress = false;
-
-function entryZoomIn (entry) {
-    if (zoomingInProgress) return;
-    zoomingInProgress = true;
-    entry.animate({
-        width: '+=130px',
-        height: '+=40%',
-        top: '-=40px',
-        left: '-=50px',
-        fontSize: '-=4pt'
-    }, 350, function () {
-        entry.addClass('expanded');
-        zoomedEntry = entry;
-        zoomedIn = true;
-        zoomingInProgress = false;
-        enableEditor(entry);
-    });
-}
-
-function entryZoomOut (entry) {
-    if (zoomingInProgress) return;
-    if (!entry) entry = $('.day-diary-entry-container.expanded');
-    if (!entry.length) return;
-    zoomingInProgress = true;
-    entry.animate({
-        width: '-=130px',
-        height: '-=40%',
-        top: '+=40px',
-        left: '+=50px',
-        paddingTop: '-=40px',
-        fontSize: '+=4pt',
-        cursor: 'hand'
-    }, 350, function () {
-        entry.removeClass('expanded');
-        zoomedEntry = null;
-        zoomedIn = false;
-        zoomingInProgress = false;
-        disableEditor(entry);
-    });
-}
-
-function enableEditor (entry) {
-    entry.css('cursor', 'text');
-    entry.css('overflow', 'auto');
-    entry.attr('contenteditable', 'true');
-    entry.attr('spellcheck', 'false');
-    //entry.siblings('.file-dropzone').show();
-}
-
-function disableEditor (entry) {
-    entry.css('cursor', 'pointer');
-    entry.css('overflow', 'hidden');
-    entry.removeAttr('contenteditable');
-    //entry.siblings('.file-dropzone').hide();
-}
