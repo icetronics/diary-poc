@@ -14,6 +14,12 @@
 	</head>
 	<body>
 		<div class="container">
+			<div class="top-bar">
+				<div class="search-container">
+					<input type="text" id="search" placeholder="search..." />
+					<i id="clearSearch" class="fa fa-times"></i>
+				</div>
+			</div>
 			<div class="activities"></div>
 			<div class="custom-calendar-wrap custom-calendar-full remodal-bg">
 				<div class="custom-header clearfix">
@@ -33,9 +39,10 @@
                     <div class="modal-content">
                         <h1 class="day"></h1>
                         <div class="text-entry"></div>
+						<div class="day-activities-container"></div>
                     </div>
                     <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
-                    <button data-remodal-action="confirm" class="remodal-confirm">OK</button>
+                    <button data-remodal-action="confirm" class="remodal-confirm">Save</button>
                 </div>
 			</div>
 		</div>

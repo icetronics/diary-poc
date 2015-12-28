@@ -62,8 +62,29 @@ $(function() {
         }
     });
 
+    var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+    var firstDay = new Date(y, m, 1);
+    var lastDay = new Date(y, m + 1, 0);
+    var text = mocks.sampleText.split('.');
+    for (var i = firstDay.getDate(); i <= lastDay.getDate(); i++) {
+        var ri = Math.floor(Math.random() * (text.length + 1));
+        var rx = Math.floor(Math.random() * (5 - 2 + 1) + 2);
+        var entry = '';
+        for (var j = ri; j <= ri + rx; j++) {
+            if (text[j]) entry += text[j] + '. ';
+        }
+
+        mocks.myCalendar[y + '-' + (m+1) + '-' + i] = {
+            entry: entry
+        };
+    }
+
+    _.forEach(mocks.activityCategories, function (category) {
+        $('.activities').append('<div class="category" data-category="' + category.id + '"></div>');
+    })
+
     _.forEach(mocks.activities, function (act) {
-        $('.activities').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
+        $('.activities').find('.category[data-category="' + act.categoryId + '"]').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
     });
 
     function resetActivityPosition () {
@@ -115,7 +136,29 @@ $(function() {
         if (mocks.myCalendar[day] && mocks.myCalendar[day].entry) {
             modalContent.find('.text-entry').html(mocks.myCalendar[day].entry);
         }
+        if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
+            _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
+                modalContent.find('.day-activities-container').append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
+            });
+        }
         dayModal.open();
+    });
+
+    $('#search').on('keypress', function (e) {
+        if (e.keyCode === 13) {
+            var searchTerm = $(this).val();
+            $('.day-diary-entry-container').each(function (i, e) {
+                $(e).parent().removeClass('highlight');
+                if ($(e).text().indexOf(searchTerm) > -1) {
+                    $(e).parent().addClass('highlight');
+                }
+            })
+        }
+    });
+
+    $('#clearSearch').on('click', function () {
+        $('.day.highlight').removeClass('highlight');
+        $('#search').val('');
     });
 
     refreshCalendar();
