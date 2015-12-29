@@ -11,15 +11,16 @@
     "bower_components"
   ],
   "dependencies": {
-    "jquery": "~2.1.4",
     "moment": "~2.10.6",
     "font-awesome": "~4.4.0",
     "interact": "~1.2.6",
     "lodash": "~3.10.1",
-    "remodal": "~1.0.5"
+    "remodal": "~1.0.5",
+    "hallo": "~1.1.1",
+    "jquery": "1.11.3"
   },
   "resolutions": {
-    "jquery": "~2.1.4",
+    "jquery": "1.11.3",
     "font-awesome": "~4.4.0"
   }
 }

@@ -71,7 +71,7 @@ $(function() {
         var rx = Math.floor(Math.random() * (5 - 2 + 1) + 2);
         var entry = '';
         for (var j = ri; j <= ri + rx; j++) {
-            if (text[j]) entry += text[j] + '. ';
+            if (text[j]) entry += text[j] + '.';
         }
 
         mocks.myCalendar[y + '-' + (m+1) + '-' + i] = {
@@ -114,7 +114,16 @@ $(function() {
             var entryContainer = $(dayCell).find('.day-diary-entry-container');
             entryContainer.empty();
             if (mocks.myCalendar[day] && mocks.myCalendar[day].entry) {
-                entryContainer.html(mocks.myCalendar[day].entry);
+                var entry = mocks.myCalendar[day].entry;
+                var actors = entry.match(/:\w+/g);
+                mocks.myCalendar[day].actors = [];
+                if (actors && actors.length) {
+                    mocks.myCalendar[day].actors = actors.map(function (actor) {
+                        return actor.substr(1);
+                    });
+                }
+
+                entryContainer.html(entry);
             }
 
             var activitiesContainer = $(dayCell).find('.day-activities-container');
@@ -133,15 +142,37 @@ $(function() {
         var day = $(this).data('day');
         var modalContent = $('.modal-content');
         modalContent.find('.day').text(day);
+
+        modalContent.find('.text-entry').empty();
         if (mocks.myCalendar[day] && mocks.myCalendar[day].entry) {
             modalContent.find('.text-entry').html(mocks.myCalendar[day].entry);
         }
+
+        modalContent.find('.text-entry').hallo({
+            plugins: {
+                halloformat: {},
+                halloheadings: {},
+                hallolists: {},
+                halloreundo: {}
+            }
+        });
+
+        modalContent.find('.day-activities-container').empty();
         if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
             _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
                 modalContent.find('.day-activities-container').append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
             });
         }
+
         dayModal.open();
+
+        modalContent.find('.text-entry').focus();
+    });
+
+    $(document).on('confirmation', '.remodal', function (e) {
+        var day = $(e.target).find('.day').text();
+        mocks.myCalendar[day].entry = $(e.target).find('.text-entry').html();
+        refreshCalendar();
     });
 
     $('#search').on('keypress', function (e) {

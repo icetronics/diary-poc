@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title></title>
 
+		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/minified/jquery-ui.min.css" />
         <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="bower_components/remodal/dist/remodal.css">
 		<link rel="stylesheet" href="css/calendar.css" />
@@ -39,6 +40,7 @@
                     <div class="modal-content">
                         <h1 class="day"></h1>
                         <div class="text-entry"></div>
+						<div class="actors"><i class="fa fa-user"></i></div>
 						<div class="day-activities-container"></div>
                     </div>
                     <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
@@ -48,9 +50,13 @@
 		</div>
 
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/jquery-ui/ui/minified/jquery.ui.widget.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
+		<script src="bower_components/rangy-official/rangy-core.min.js"></script>
         <script src="bower_components/interact/dist/interact.min.js"></script>
         <script src="bower_components/remodal/dist/remodal.min.js"></script>
+		<script src="bower_components/qtip2" charset="utf-8"></script>
+		<script src="bower_components/hallo/dist/hallo.js"></script>
 		<script src="script/jquery.calendario.js"></script>
         <script src="script/mock-data.js"></script>
 		<script src="script/main.js"></script>
