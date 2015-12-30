@@ -1,9 +1,6 @@
 $(function() {
 
-    var cal = $('#calendar').calendario({
-            onDayClick: function ($el, $contentEl, dateProperties) {
-
-            }}),
+    var cal = $('#calendar').calendario(),
         $month = $('#custom-month').html(cal.getMonthName()),
         $year = $('#custom-year').html(cal.getYear());
 
@@ -87,6 +84,16 @@ $(function() {
         $('.activities').find('.category[data-category="' + act.categoryId + '"]').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
     });
 
+    $('.activities .activity').qtip({
+        content: {
+            attr: 'title'
+        },
+        position: {
+            my: 'left center',
+            at: 'right center'
+        }
+    });
+
     function resetActivityPosition () {
         $('.activity.draggable').css('transform', 'translate(0, 0)');
         $('.activity.draggable').removeAttr('data-x');
@@ -120,6 +127,8 @@ $(function() {
                 if (actors && actors.length) {
                     mocks.myCalendar[day].actors = actors.map(function (actor) {
                         return actor.substr(1);
+                    }).filter(function (value, index, self) {
+                        return self.indexOf(value) === index;
                     });
                 }
 
@@ -162,6 +171,22 @@ $(function() {
             _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
                 modalContent.find('.day-activities-container').append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
             });
+        }
+
+        var actorsIcon = modalContent.find('.actors>i');
+        actorsIcon.show();
+        if (mocks.myCalendar[day].actors && mocks.myCalendar[day].actors.length) {
+            actorsIcon.qtip({
+                content: mocks.myCalendar[day].actors.join('<br />'),
+                position: {
+                    my: 'bottom center',
+                    at: 'top center',
+                    target: actorsIcon
+                }
+            });
+        }
+        else {
+            actorsIcon.hide();
         }
 
         dayModal.open();
