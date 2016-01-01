@@ -77,12 +77,14 @@ $(function() {
     }
 
     _.forEach(mocks.activityCategories, function (category) {
-        $('.activities').append('<div class="category" data-category="' + category.id + '"></div>');
-    })
+        $('.activities').append('<tr class="category" data-category="' + category.id + '"><td style="color: white; background-color: ' + category.headerBackground + '"><span class="category-label"><span class="category-label-inner">' + category.title + '</span></span></td><td class="activities-container" style="background-color: ' + category.activitiesBackground + '"></td></tr>');
+    });
 
     _.forEach(mocks.activities, function (act) {
-        $('.activities').find('.category[data-category="' + act.categoryId + '"]').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
+        $('.activities').find('.category[data-category="' + act.categoryId + '"] .activities-container').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
     });
+
+    $('.activities').find('.category[data-category="custom"] .activities-container').append('<div title="New custom activity" class="activity new"><i class="fa fa-plus-square"></i></div>');
 
     $('.activities .activity').qtip({
         content: {
@@ -111,7 +113,25 @@ $(function() {
             mocks.myCalendar[day].activities = [];
         }
 
-        mocks.myCalendar[day].activities.push(activity);
+        mocks.myCalendar[day].activities.push({
+            activityId: activity,
+            dayActivityId: mocks.myCalendar[day].activities.length + 1
+        });
+    }
+
+    function renderActivityTooltipContent (dayActivity) {
+        var activity = _.findWhere(mocks.activities, { id: dayActivity.activityId });
+        var tooltipContent = '<div class="header">' + activity.title + '</div>';
+        for (var f in activity.fields) {
+            var field = activity.fields[f];
+            var fieldValue = _.findWhere(dayActivity.fieldValues, { fieldName: field.name });
+            switch (field.type) {
+                case 'text':
+                    tooltipContent += '<div class="field"><input type="text" value="' + (fieldValue || '') + '" placeholder="' + field.label + '"></div>';
+                    break;
+            }
+        }
+        return tooltipContent;
     }
 
     function refreshCalendar () {
@@ -139,9 +159,23 @@ $(function() {
             activitiesContainer.empty();
             if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
                 _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
-                    $(activitiesContainer).append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
+                    $(activitiesContainer).append(
+                        '<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity.activityId] + '"></i></div>' +
+                        '<div class="activity-tooltip-content" data-dayactivityid="' + dayActivity.dayActivityId + '">' + renderActivityTooltipContent(dayActivity) + '</div>');
                 });
             }
+        });
+
+        $('.day-activities-container .activity').each(function () {
+            $(this).qtip({
+                content: {
+                    text: $(this).next('.activity-tooltip-content')
+                },
+                hide: {
+                    fixed: true,
+                    delay: 300
+                }
+            });
         });
     }
 
@@ -175,7 +209,7 @@ $(function() {
 
         var actorsIcon = modalContent.find('.actors>i');
         actorsIcon.show();
-        if (mocks.myCalendar[day].actors && mocks.myCalendar[day].actors.length) {
+        if (mocks.myCalendar[day] && mocks.myCalendar[day].actors && mocks.myCalendar[day].actors.length) {
             actorsIcon.qtip({
                 content: mocks.myCalendar[day].actors.join('<br />'),
                 position: {
