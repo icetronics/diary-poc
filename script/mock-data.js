@@ -73,6 +73,11 @@ var mocks = {
             title: 'Appointment'
         },
         {
+            id: 'holiday',
+            categoryId: 'general',
+            title: 'Holiday'
+        },
+        {
             id: 'travel',
             categoryId: 'general',
             title: 'Travel'
@@ -100,6 +105,7 @@ var mocks = {
         cinema: 'video-camera',
         reading: 'book',
         videogame: 'gamepad',
+        holiday: 'sun-o',
         travel: 'plane',
         appointment: 'clock-o',
         birthday: 'gift',

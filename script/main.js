@@ -125,12 +125,14 @@ $(function() {
         for (var f in activity.fields) {
             var field = activity.fields[f];
             var fieldValue = _.findWhere(dayActivity.fieldValues, { fieldName: field.name });
+            var value = fieldValue && fieldValue.value ? fieldValue.value : '';
             switch (field.type) {
                 case 'text':
-                    tooltipContent += '<div class="field"><input type="text" value="' + (fieldValue || '') + '" placeholder="' + field.label + '"></div>';
+                    tooltipContent += '<div class="field" data-name="' + field.name + '" data-type="' + field.type + '"><input type="text" value="' + value + '" placeholder="' + field.label + '"></div>';
                     break;
             }
         }
+        tooltipContent += '<div style="text-align: right"><i class="fa fa-check-circle save icon-button green"></i><i class="fa fa-times-circle cancel icon-button red"></i></div>';
         return tooltipContent;
     }
 
@@ -161,7 +163,7 @@ $(function() {
                 _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
                     $(activitiesContainer).append(
                         '<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity.activityId] + '"></i></div>' +
-                        '<div class="activity-tooltip-content" data-dayactivityid="' + dayActivity.dayActivityId + '">' + renderActivityTooltipContent(dayActivity) + '</div>');
+                        '<div class="activity-tooltip-content" data-day="' + day + '" data-dayactivityid="' + dayActivity.dayActivityId + '">' + renderActivityTooltipContent(dayActivity) + '</div>');
                 });
             }
         });
@@ -175,6 +177,26 @@ $(function() {
                     fixed: true,
                     delay: 300
                 }
+            });
+        });
+
+        $('.activity-tooltip-content .save').off('click').on('click', function (e) {
+            var day = $(this).closest('.activity-tooltip-content').data('day');
+            var dayActivityId = $(this).closest('.activity-tooltip-content').data('dayactivityid');
+            var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
+
+            dayActivity.fieldValues = [];
+
+            $(this).closest('.activity-tooltip-content').find('.field').each(function (index, field) {
+                var fieldName = $(field).data('name');
+                var type = $(field).data('type');
+                 // switch by type
+                var value = $(field).find('input').val();
+
+                dayActivity.fieldValues.push({
+                    fieldName: fieldName,
+                    value: value
+                });
             });
         });
     }
