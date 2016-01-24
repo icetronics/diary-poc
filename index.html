@@ -3,7 +3,7 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title></title>
+		<title>Diario</title>
 
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/minified/jquery-ui.min.css">
         <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
@@ -19,7 +19,7 @@
 			<div class="top-bar">
 				<div class="search-container">
 					<input type="text" id="search" placeholder="search..." />
-					<i id="clearSearch" class="fa fa-times"></i>
+					<i id="clearSearch" class="fa fa-times-circle clear-button"></i>
 				</div>
 			</div>
 			<table class="activities"></table>
@@ -47,12 +47,115 @@
                     <button data-remodal-action="cancel" class="remodal-cancel">Cancel</button>
                     <button data-remodal-action="confirm" class="remodal-confirm">Save</button>
                 </div>
+				<div class="remodal custom-activity-modal" data-remodal-id="customActivityModal">
+                    <button data-remodal-action="close" class="remodal-close"></button>
+                    <div class="modal-content" style="margin-bottom: 12px">
+                        <h1 class="day" style="margin-bottom: 12px">Create custom activity</h1>
+						<div>
+							<input type="text" class="activity-name" placeholder="Activity name" />
+							<i class="icon-sample fa fa-question" data-color="#078bff"></i>
+                        </div>
+						<h2 style="margin: 8px 0">Fields</h2>
+						<table class="fields" style="margin: auto">
+							<tr data-count="0">
+								<td><input type="text" class="field-name" placeholder="Field name" /></td>
+								<td>
+									<select class="field-type">
+										<option value="">select type...</option>
+										<option value="text">text</option>
+										<option value="date">date</option>
+										<option value="flag">flag</option>
+									</select>
+								</td>
+							</tr>
+						</table>
+						<div>
+							<i class="fa fa-plus-circle add icon-button green"></i>
+						</div>
+						<div>
+							<div class="select-icon">Select icon...</div>
+							<div class="icon-container"></div>
+						</div>
+						<div class="color-picker">
+							<div class="select-color">Select color...</div>
+							<table class="color-table">
+							<tbody>
+							<tr>
+							<td class="color-box" style="background:#ef9a9a" data-hex="ef9a9a" data-hashhex="#ef9a9a" data-rgb="rgb(239,154,154)" data-rgba="rgba(239,154,154 ,1)"></td>
+							<td class="color-box" style="background:#F48FB1" data-hex="F48FB1" data-hashhex="#F48FB1" data-rgb="rgb(244,143,177)" data-rgba="rgba(244,143,177 ,1)"></td>
+							<td class="color-box" style="background:#CE93D8" data-hex="CE93D8" data-hashhex="#CE93D8" data-rgb="rgb(206,147,216)" data-rgba="rgba(206,147,216 ,1)"></td>
+							<td class="color-box" style="background:#B39DDB" data-hex="B39DDB" data-hashhex="#B39DDB" data-rgb="rgb(179,157,219)" data-rgba="rgba(179,157,219 ,1)"></td>
+							<td class="color-box" style="background:#9FA8DA" data-hex="9FA8DA" data-hashhex="#9FA8DA" data-rgb="rgb(159,168,218)" data-rgba="rgba(159,168,218 ,1)"></td>
+							<td class="color-box" style="background:#90CAF9" data-hex="90CAF9" data-hashhex="#90CAF9" data-rgb="rgb(144,202,249)" data-rgba="rgba(144,202,249 ,1)"></td>
+							<td class="color-box" style="background:#81D4FA" data-hex="81D4FA" data-hashhex="#81D4FA" data-rgb="rgb(129,212,250)" data-rgba="rgba(129,212,250 ,1)"></td>
+							<td class="color-box" style="background:#80DEEA" data-hex="80DEEA" data-hashhex="#80DEEA" data-rgb="rgb(128,222,234)" data-rgba="rgba(128,222,234 ,1)"></td>
+							<td class="color-box" style="background:#80CBC4" data-hex="80CBC4" data-hashhex="#80CBC4" data-rgb="rgb(128,203,196)" data-rgba="rgba(128,203,196 ,1)"></td>
+							<td class="color-box" style="background:#A5D6A7" data-hex="A5D6A7" data-hashhex="#A5D6A7" data-rgb="rgb(165,214,167)" data-rgba="rgba(165,214,167 ,1)"></td>
+							<td class="color-box" style="background:#C5E1A5" data-hex="C5E1A5" data-hashhex="#C5E1A5" data-rgb="rgb(197,225,165)" data-rgba="rgba(197,225,165 ,1)"></td>
+							<td class="color-box" style="background:#E6EE9C" data-hex="E6EE9C" data-hashhex="#E6EE9C" data-rgb="rgb(230,238,156)" data-rgba="rgba(230,238,156 ,1)"></td>
+							<td class="color-box" style="background:#FFF59D" data-hex="FFF59D" data-hashhex="#FFF59D" data-rgb="rgb(255,245,157)" data-rgba="rgba(255,245,157 ,1)"></td>
+							<td class="color-box" style="background:#FFE082" data-hex="FFE082" data-hashhex="#FFE082" data-rgb="rgb(255,224,130)" data-rgba="rgba(255,224,130 ,1)"></td>
+							<td class="color-box" style="background:#FFCC80" data-hex="FFCC80" data-hashhex="#FFCC80" data-rgb="rgb(255,204,128)" data-rgba="rgba(255,204,128 ,1)"></td>
+							<td class="color-box" style="background:#FFAB91" data-hex="FFAB91" data-hashhex="#FFAB91" data-rgb="rgb(255,171,145)" data-rgba="rgba(255,171,145 ,1)"></td>
+							<td class="color-box" style="background:#BCAAA4" data-hex="BCAAA4" data-hashhex="#BCAAA4" data-rgb="rgb(188,170,164)" data-rgba="rgba(188,170,164 ,1)"></td>
+							<td class="color-box" style="background:#EEEEEE" data-hex="EEEEEE" data-hashhex="#EEEEEE" data-rgb="rgb(238,238,238)" data-rgba="rgba(238,238,238 ,1)"></td>
+							<td class="color-box" style="background:#B0BEC5" data-hex="B0BEC5" data-hashhex="#B0BEC5" data-rgb="rgb(176,190,197)" data-rgba="rgba(176,190,197 ,1)"></td>
+							</tr>
+							<tr>
+							<td class="color-box" style="background:#f44336" data-hex="f44336" data-hashhex="#f44336" data-rgb="rgb(244,67,54)" data-rgba="rgba(244,67,54 ,1)"></td>
+							<td class="color-box" style="background:#E91E63" data-hex="E91E63" data-hashhex="#E91E63" data-rgb="rgb(233,30,99)" data-rgba="rgba(233,30,99 ,1)"></td>
+							<td class="color-box" style="background:#9C27B0" data-hex="9C27B0" data-hashhex="#9C27B0" data-rgb="rgb(156,39,176)" data-rgba="rgba(156,39,176 ,1)"></td>
+							<td class="color-box" style="background:#673AB7" data-hex="673AB7" data-hashhex="#673AB7" data-rgb="rgb(103,58,183)" data-rgba="rgba(103,58,183 ,1)"></td>
+							<td class="color-box" style="background:#3F51B5" data-hex="3F51B5" data-hashhex="#3F51B5" data-rgb="rgb(63,81,181)" data-rgba="rgba(63,81,181 ,1)"></td>
+							<td class="color-box" style="background:#2196F3" data-hex="2196F3" data-hashhex="#2196F3" data-rgb="rgb(33,150,243)" data-rgba="rgba(33,150,243 ,1)"></td>
+							<td class="color-box" style="background:#03A9F4" data-hex="03A9F4" data-hashhex="#03A9F4" data-rgb="rgb(3,169,244)" data-rgba="rgba(3,169,244 ,1)"></td>
+							<td class="color-box" style="background:#00BCD4" data-hex="00BCD4" data-hashhex="#00BCD4" data-rgb="rgb(0,188,212)" data-rgba="rgba(0,188,212 ,1)"></td>
+							<td class="color-box" style="background:#009688" data-hex="009688" data-hashhex="#009688" data-rgb="rgb(0,150,136)" data-rgba="rgba(0,150,136 ,1)"></td>
+							<td class="color-box" style="background:#4CAF50" data-hex="4CAF50" data-hashhex="#4CAF50" data-rgb="rgb(76,175,80)" data-rgba="rgba(76,175,80 ,1)"></td>
+							<td class="color-box" style="background:#8BC34A" data-hex="8BC34A" data-hashhex="#8BC34A" data-rgb="rgb(139,195,74)" data-rgba="rgba(139,195,74 ,1)"></td>
+							<td class="color-box" style="background:#CDDC39" data-hex="CDDC39" data-hashhex="#CDDC39" data-rgb="rgb(205,220,57)" data-rgba="rgba(205,220,57 ,1)"></td>
+							<td class="color-box" style="background:#FFEB3B" data-hex="FFEB3B" data-hashhex="#FFEB3B" data-rgb="rgb(255,235,59)" data-rgba="rgba(255,235,59 ,1)"></td>
+							<td class="color-box" style="background:#FFC107" data-hex="FFC107" data-hashhex="#FFC107" data-rgb="rgb(255,193,7)" data-rgba="rgba(255,193,7 ,1)"></td>
+							<td class="color-box" style="background:#FF9800" data-hex="FF9800" data-hashhex="#FF9800" data-rgb="rgb(255,152,0)" data-rgba="rgba(255,152,0 ,1)"></td>
+							<td class="color-box" style="background:#FF5722" data-hex="FF5722" data-hashhex="#FF5722" data-rgb="rgb(255,87,34)" data-rgba="rgba(255,87,34 ,1)"></td>
+							<td class="color-box" style="background:#795548" data-hex="795548" data-hashhex="#795548" data-rgb="rgb(121,85,72)" data-rgba="rgba(121,85,72 ,1)"></td>
+							<td class="color-box" style="background:#9E9E9E" data-hex="9E9E9E" data-hashhex="#9E9E9E" data-rgb="rgb(158,158,158)" data-rgba="rgba(158,158,158 ,1)"></td>
+							<td class="color-box" style="background:#607D8B" data-hex="607D8B" data-hashhex="#607D8B" data-rgb="rgb(96,125,139)" data-rgba="rgba(96,125,139 ,1)"></td>
+							</tr>
+							<tr>
+							<td class="color-box" style="background:#c62828" data-hex="c62828" data-hashhex="#c62828" data-rgb="rgb(198,40,40)" data-rgba="rgba(198,40,40 ,1)"></td>
+							<td class="color-box" style="background:#AD1457" data-hex="AD1457" data-hashhex="#AD1457" data-rgb="rgb(173,20,87)" data-rgba="rgba(173,20,87 ,1)"></td>
+							<td class="color-box" style="background:#6A1B9A" data-hex="6A1B9A" data-hashhex="#6A1B9A" data-rgb="rgb(106,27,154)" data-rgba="rgba(106,27,154 ,1)"></td>
+							<td class="color-box" style="background:#4527A0" data-hex="4527A0" data-hashhex="#4527A0" data-rgb="rgb(69,39,160)" data-rgba="rgba(69,39,160 ,1)"></td>
+							<td class="color-box" style="background:#283593" data-hex="283593" data-hashhex="#283593" data-rgb="rgb(40,53,147)" data-rgba="rgba(40,53,147 ,1)"></td>
+							<td class="color-box" style="background:#1565C0" data-hex="1565C0" data-hashhex="#1565C0" data-rgb="rgb(21,101,192)" data-rgba="rgba(21,101,192 ,1)"></td>
+							<td class="color-box" style="background:#0277BD" data-hex="0277BD" data-hashhex="#0277BD" data-rgb="rgb(2,119,189)" data-rgba="rgba(2,119,189 ,1)"></td>
+							<td class="color-box" style="background:#00838F" data-hex="00838F" data-hashhex="#00838F" data-rgb="rgb(0,131,143)" data-rgba="rgba(0,131,143 ,1)"></td>
+							<td class="color-box" style="background:#00695C" data-hex="00695C" data-hashhex="#00695C" data-rgb="rgb(0,105,92)" data-rgba="rgba(0,105,92 ,1)"></td>
+							<td class="color-box" style="background:#2E7D32" data-hex="2E7D32" data-hashhex="#2E7D32" data-rgb="rgb(46,125,50)" data-rgba="rgba(46,125,50 ,1)"></td>
+							<td class="color-box" style="background:#558B2F" data-hex="558B2F" data-hashhex="#558B2F" data-rgb="rgb(85,139,47)" data-rgba="rgba(85,139,47 ,1)"></td>
+							<td class="color-box" style="background:#9E9D24" data-hex="9E9D24" data-hashhex="#9E9D24" data-rgb="rgb(158,157,36)" data-rgba="rgba(158,157,36 ,1)"></td>
+							<td class="color-box" style="background:#F9A825" data-hex="F9A825" data-hashhex="#F9A825" data-rgb="rgb(249,168,37)" data-rgba="rgba(249,168,37 ,1)"></td>
+							<td class="color-box" style="background:#FF8F00" data-hex="FF8F00" data-hashhex="#FF8F00" data-rgb="rgb(255,143,0)" data-rgba="rgba(255,143,0 ,1)"></td>
+							<td class="color-box" style="background:#EF6C00" data-hex="EF6C00" data-hashhex="#EF6C00" data-rgb="rgb(239,108,0)" data-rgba="rgba(239,108,0 ,1)"></td>
+							<td class="color-box" style="background:#D84315" data-hex="D84315" data-hashhex="#D84315" data-rgb="rgb(216,67,21)" data-rgba="rgba(216,67,21 ,1)"></td>
+							<td class="color-box" style="background:#4E342E" data-hex="4E342E" data-hashhex="#4E342E" data-rgb="rgb(78,52,46)" data-rgba="rgba(78,52,46 ,1)"></td>
+							<td class="color-box" style="background:#424242" data-hex="424242" data-hashhex="#424242" data-rgb="rgb(66,66,66)" data-rgba="rgba(66,66,66 ,1)"></td>
+							<td class="color-box" style="background:#37474F" data-hex="37474F" data-hashhex="#37474F" data-rgb="rgb(55,71,79)" data-rgba="rgba(55,71,79 ,1)"></td>
+							</tr>
+							</tbody>
+							</table>
+						</div>
+                    </div>
+                    <button data-remodal-action="confirm" class="remodal-confirm">Create</button>
+                </div>
 			</div>
 		</div>
 
         <script src="bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="bower_components/jquery-ui/ui/minified/jquery.ui.widget.min.js"></script>
         <script src="bower_components/lodash/lodash.min.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="bower_components/rangy-official/rangy-core.min.js"></script>
         <script src="bower_components/interact/dist/interact.min.js"></script>
         <script src="bower_components/remodal/dist/remodal.min.js"></script>

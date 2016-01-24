@@ -1,6 +1,6 @@
 .custom-calendar-full {
     margin-left: 64px;
-    margin-top: 20px;
+    margin-top: -8px;
 	width: calc(100% - 64px);
 	height: auto;
 }

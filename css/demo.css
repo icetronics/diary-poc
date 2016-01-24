@@ -37,7 +37,7 @@ body {
     height: 100%;
 }
 
-input {
+input, select {
 	font-family: 'Cabin', Calibri, Arial, sans-serif;
 	font-size: 15px;
 	color: #333;
@@ -81,6 +81,21 @@ a {
 	font-size: 18px;
 	font-weight: 300;
 	display: block;
+}
+
+.top-bar {
+	background: linear-gradient(to bottom, #555555 0%, #444444 100%);
+    height: 24px;
+}
+
+.clear-button {
+	color: #fff;
+	margin: 0 22px 0 0;
+	cursor: pointer;
+}
+
+.day-activities-container {
+	padding-top: 8px;
 }
 
 .activities {
@@ -200,6 +215,10 @@ a {
 	width: 100px;
 }
 
+.day {
+	transition: all 0.4s ease-in-out;
+}
+
 .day.highlight {
 	background-color: rgba(255,255,255,0.6);
 	border-radius: 20px;
@@ -219,8 +238,13 @@ a {
 	outline: none;
 }
 
+.day-modal .day-activities-container {
+	margin-bottom: 12px;
+	text-align: left;
+}
+
 .day-modal .actors {
-	text-align: right;
+	float: right;
 	margin: 8px;
 }
 
@@ -266,6 +290,12 @@ a {
 	width: 200px;
 }
 
+.spinner-icon {
+	font-size: 16px;
+	margin: 4px;
+	display: none;
+}
+
 .icon-button {
 	font-size: 16px;
 	margin: 4px;
@@ -278,4 +308,87 @@ a {
 
 .icon-button.red {
 	color: rgb(193, 88, 88);
+}
+
+.select-icon {
+	width: 400px;
+	margin-top: 8px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 4px 0 8px 0;
+	cursor: pointer;
+    transition: color 0.25s;
+	background-color: #ddd;
+	border-radius: 8px 8px 0 0;
+}
+
+.select-icon:hover {
+	color: #078bff;
+}
+
+.icon-sample {
+	width: 26px;
+    height: 26px;
+    text-align: center;
+    padding-top: 4px;
+    border-radius: 100%;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 18px;
+    background-color: #078bff;
+    color: #fff;
+}
+
+.icon-container {
+	display: none;
+	width: 400px;
+	max-height: 200px;
+	margin: auto;
+	overflow: scroll;
+	overflow-x: hidden;
+	background-color: #eee;
+	border-radius: 0 0 8px 8px;
+}
+
+.icon-container i {
+	font-size: 20px;
+    margin: 4px;
+    cursor: pointer;
+    transition: color 0.25s;
+    width: 24px;
+}
+
+.icon-container i:hover {
+	color: #078bff;
+}
+
+.color-table {
+	display: none;
+}
+
+.color-box {
+	width: 40px;
+	height: 30px;
+	cursor: pointer;
+	transition: border 0.1s;
+}
+
+.color-box:hover {
+	border: 4px solid #eee;
+}
+
+.select-color {
+	width: 400px;
+	margin-top: 8px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 4px 0 8px 0;
+	cursor: pointer;
+    transition: color 0.25s;
+	background-color: #ddd;
+	border-radius: 8px 8px 0 0;
+}
+
+.select-color:hover {
+	color: #078bff;
 }

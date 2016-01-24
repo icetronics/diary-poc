@@ -76,15 +76,69 @@ $(function() {
         };
     }
 
-    _.forEach(mocks.activityCategories, function (category) {
-        $('.activities').append('<tr class="category" data-category="' + category.id + '"><td style="color: white; background-color: ' + category.headerBackground + '"><span class="category-label"><span class="category-label-inner">' + category.title + '</span></span></td><td class="activities-container" style="background-color: ' + category.activitiesBackground + '"></td></tr>');
+    function renderActivities () {
+        $('.activities').empty();
+        _.forEach(mocks.activityCategories, function (category) {
+            $('.activities').append('<tr class="category" data-category="' + category.id + '"><td style="color: white; background-color: ' + category.headerBackground + '"><span class="category-label"><span class="category-label-inner">' + category.title + '</span></span></td><td class="activities-container" style="background-color: ' + category.activitiesBackground + '"></td></tr>');
+        });
+
+        _.forEach(mocks.activities, function (act) {
+            $('.activities').find('.category[data-category="' + act.categoryId + '"] .activities-container').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop" style="background-color: ' + act.color + '"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
+        });
+
+        $('.activities').find('.category[data-category="custom"] .activities-container').append('<div title="New custom activity" class="activity new"><i class="fa fa-plus-square"></i></div>');
+        $('.activity.new').on('click', function () {
+            var customActivityModal = $('[data-remodal-id="customActivityModal"]').remodal();
+            customActivityModal.open();
+        });
+    }
+
+    renderActivities();
+
+    $('.custom-activity-modal .add').on('click', function () {
+        var count = parseInt($('.custom-activity-modal table tr:last-child').data('count')) + 1;
+        $('.custom-activity-modal table').append('<tr data-count="' + count + '">\
+            <td><input type="text" placeholder="Field name" /></td>\
+            <td>\
+                <select>\
+                    <option value="">select type...</option>\
+                    <option value="text">text</option>\
+                    <option value="date">date</option>\
+                    <option value="flag">flag</option>\
+                </select>\
+            </td>\
+        </tr>');
     });
 
-    _.forEach(mocks.activities, function (act) {
-        $('.activities').find('.category[data-category="' + act.categoryId + '"] .activities-container').append('<div title="' + act.title + '" data-activity-id="' + act.id + '" class="activity draggable drag-drop"><i class="fa fa-' + mocks.activitiesIconMap[act.id] + '"></i></div>');
-    });
+    $(document).on('confirmation', '.remodal.custom-activity-modal', function (e) {
+        var activityName = $('.custom-activity-modal .activity-name').val();
 
-    $('.activities').find('.category[data-category="custom"] .activities-container').append('<div title="New custom activity" class="activity new"><i class="fa fa-plus-square"></i></div>');
+        var newActivity = {
+            id: activityName,
+            categoryId: 'custom',
+            title: activityName,
+            color: $('.icon-sample').data('color'),
+            fields: []
+        };
+
+        $('.custom-activity-modal .fields tr').each(function (i, row) {
+            var fieldName = $(row).find('.field-name').val(),
+                fieldType = $(row).find('.field-type').val();
+            if (fieldName && fieldType) {
+                newActivity.fields.push({
+                    name: fieldName,
+                    label: fieldName,
+                    type: fieldType
+                });
+            }
+        });
+
+        mocks.activities.push(newActivity);
+
+        mocks.activitiesIconMap[newActivity.id] = $('.custom-activity-modal .select-icon').data('icon');
+
+        renderActivities();
+    });
 
     $('.activities .activity').qtip({
         content: {
@@ -132,9 +186,11 @@ $(function() {
                     break;
             }
         }
-        tooltipContent += '<div style="text-align: right"><i class="fa fa-check-circle save icon-button green"></i><i class="fa fa-times-circle cancel icon-button red"></i></div>';
+        tooltipContent += '<div style="text-align: right"><i class="fa fa-spinner fa-pulse loading spinner-icon"></i><i class="fa fa-check-circle save icon-button green"></i><i class="fa fa-times-circle cancel icon-button red"></i></div>';
         return tooltipContent;
     }
+
+    var activityTooltips = [];
 
     function refreshCalendar () {
         $.each($('.day'), function (index, dayCell) {
@@ -162,14 +218,16 @@ $(function() {
             if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
                 _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
                     $(activitiesContainer).append(
-                        '<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity.activityId] + '"></i></div>' +
+                        '<div class="activity" data-day="' + day + '" data-dayactivityid="' + dayActivity.dayActivityId + '" style="background-color: ' + _.findWhere(mocks.activities, { id: dayActivity.activityId }).color + '"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity.activityId] + '"></i></div>' +
                         '<div class="activity-tooltip-content" data-day="' + day + '" data-dayactivityid="' + dayActivity.dayActivityId + '">' + renderActivityTooltipContent(dayActivity) + '</div>');
                 });
             }
         });
 
         $('.day-activities-container .activity').each(function () {
-            $(this).qtip({
+            var day = $(this).data('day');
+            var dayActivityId = $(this).data('dayactivityid');
+            var tooltip = $(this).qtip({
                 content: {
                     text: $(this).next('.activity-tooltip-content')
                 },
@@ -178,33 +236,92 @@ $(function() {
                     delay: 300
                 }
             });
+            var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
+            dayActivity.tooltip = tooltip.qtip('api');
         });
 
+        attachActivityDetailActions();
+    }
+
+    function attachActivityDetailActions () {
         $('.activity-tooltip-content .save').off('click').on('click', function (e) {
-            var day = $(this).closest('.activity-tooltip-content').data('day');
-            var dayActivityId = $(this).closest('.activity-tooltip-content').data('dayactivityid');
-            var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
+            activityDetailsSave($(this));
+        });
 
-            dayActivity.fieldValues = [];
+        $('.activity-tooltip-content .cancel').off('click').on('click', function (e) {
+            activityDetailsCancel($(this));
+        });
+    }
 
-            $(this).closest('.activity-tooltip-content').find('.field').each(function (index, field) {
-                var fieldName = $(field).data('name');
-                var type = $(field).data('type');
-                 // switch by type
-                var value = $(field).find('input').val();
+    function activityDetailsSave (button) {
+        var day = button.closest('.activity-tooltip-content').data('day');
+        var dayActivityId = button.closest('.activity-tooltip-content').data('dayactivityid');
+        var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
 
-                dayActivity.fieldValues.push({
-                    fieldName: fieldName,
-                    value: value
-                });
+        dayActivity.fieldValues = [];
+
+        button.closest('.activity-tooltip-content').find('.field').each(function (index, field) {
+            var fieldName = $(field).data('name');
+            var type = $(field).data('type');
+             // switch by type
+            var value = $(field).find('input').val();
+
+            dayActivity.fieldValues.push({
+                fieldName: fieldName,
+                value: value
             });
         });
+
+        var spinner = button.closest('.activity-tooltip-content').find('.loading');
+        spinner.fadeIn(200);
+        setTimeout(function () {
+            spinner.hide();
+            dayActivity.tooltip.hide();
+        }, 500);
+    }
+
+    function activityDetailsCancel (button) {
+        var day = button.closest('.activity-tooltip-content').data('day');
+        var dayActivityId = button.closest('.activity-tooltip-content').data('dayactivityid');
+        var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
+        dayActivity.tooltip.hide();
+        button.closest('.activity-tooltip-content').html(renderActivityTooltipContent(dayActivity));
+
+        attachActivityDetailActions();
     }
 
     var dayModal = $('[data-remodal-id="dayModal"]').remodal();
 
+    for (var i = 0; i < mocks.faIcons.length; i++) {
+        $('.icon-container').append('<i class="fa ' + mocks.faIcons[i] + '"></i>');
+    }
+
+    $('.select-icon').on('click', function () {
+        $('.icon-container').slideToggle(250);
+    });
+
+    $('.icon-container i').on('click', function (e) {
+        var faIcon = $(e.target).attr('class').substring(6);
+        $('.select-icon').data('icon', faIcon);
+        $('.icon-sample').attr('class', 'icon-sample fa fa-' + faIcon);
+        $('.icon-container').slideToggle(250);
+    });
+
+    $('.select-color').on('click', function () {
+        $('.color-table').slideToggle(250);
+    });
+
+    $('.color-box').on('click', function (e) {
+        var color = $(e.target).data('hashhex');
+        $('.icon-sample').data('color', color);
+        $('.icon-sample').css('background-color', color);
+        $('.color-table').slideToggle(250);
+    });
+
     $('.day').on('click', function () {
         var day = $(this).data('day');
+        if (!day) return;
+
         var modalContent = $('.modal-content');
         modalContent.find('.day').text(day);
 
@@ -225,8 +342,28 @@ $(function() {
         modalContent.find('.day-activities-container').empty();
         if (mocks.myCalendar[day] && mocks.myCalendar[day].activities) {
             _.forEach(mocks.myCalendar[day].activities, function (dayActivity) {
-                modalContent.find('.day-activities-container').append('<div class="activity"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity] + '"></i></div>');
+                modalContent.find('.day-activities-container').append(
+                    '<div class="activity" data-day="' + day + '" data-dayactivityid="' + dayActivity.dayActivityId + '" style="background-color: ' + _.findWhere(mocks.activities, { id: dayActivity.activityId }).color + '"><i class="fa fa-' + mocks.activitiesIconMap[dayActivity.activityId] + '"></i></div>' +
+                    '<div class="activity-tooltip-content" data-day="' + day + '" data-dayactivityid="' + dayActivity.dayActivityId + '">' + renderActivityTooltipContent(dayActivity) + '</div>');
             });
+
+            modalContent.find('.day-activities-container .activity').each(function () {
+                var day = $(this).data('day');
+                var dayActivityId = $(this).data('dayactivityid');
+                var tooltip = $(this).qtip({
+                    content: {
+                        text: $(this).next('.activity-tooltip-content')
+                    },
+                    hide: {
+                        fixed: true,
+                        delay: 300
+                    }
+                });
+                var dayActivity = _.findWhere(mocks.myCalendar[day].activities, { dayActivityId: dayActivityId });
+                dayActivity.tooltip = tooltip.qtip('api');
+            });
+
+            attachActivityDetailActions();
         }
 
         var actorsIcon = modalContent.find('.actors>i');
@@ -250,7 +387,7 @@ $(function() {
         modalContent.find('.text-entry').focus();
     });
 
-    $(document).on('confirmation', '.remodal', function (e) {
+    $(document).on('confirmation', '.remodal.day-modal', function (e) {
         var day = $(e.target).find('.day').text();
         mocks.myCalendar[day].entry = $(e.target).find('.text-entry').html();
         refreshCalendar();
